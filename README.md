@@ -28,40 +28,36 @@ This project builds an automated ETL system using AWS to integrate all data, tra
 
 ### **2. Data Lake Layer – Amazon S3**
 Raw data from both sources is ingested in the S3 Data Lake:
-- s3://careplus-stored-data/support-logs/raw/
-- s3://careplus-stored-data/support-tickets/raw/
+- ***s3://careplus-stored-data/support-logs/raw/***
+- ***s3://careplus-stored-data/support-tickets/raw/***
 
 ### **3. Data Processing & Transformation**
-
 #### **a) Log Files Pipeline**
-- Raw logs ingested to S3  
+- Raw log files ingested into S3.  
 - **AWS Lambda (serverless)** performs:
-  - Cleaning  
+  - Data Cleaning  
   - Parsing JSON/text logs  
   - Data transformation  
-- Stores output in Parquet under:
-
+- Output stored as Parquet in: ***s3://careplus-stored-data/support-logs/processed/***
 #### **b) Tickets Pipeline**
-- MySQL ticket data exported as CSV  
-- Loaded into:
-
+- Tickets data in MySQL database exported as CSV files and ingested into S3. 
 - **AWS Glue** transforms the data:
   - Cleaning & standardization  
   - Conversion to Parquet  
-- Stored under:
+- Output stored as Parquet in: ***s3://careplus-stored-data/support-tickets/processed/***
 
 ### **4. Ad-hoc SQL Analysis – Amazon Athena**
-- Run queries directly on S3 processed directories  
-- Helps validate ETL output and perform exploratory analytics
+- Run quick Ad-hoc queries directly on the parquet files in S3 processed directories. 
+- Helps validate ETL output and perform exploratory analytics.
 
 ### **5. Data Warehouse Layer – Amazon Redshift Serverless**
-- All cleaned, optimized Parquet data from S3 is loaded into Redshift  
-- Serves as the **single source of truth** for analytics and reporting
+- All cleaned and optimized processed data from S3 is loaded into Redshift. 
+- Serves as the **single source of truth** for analytics and reporting.
 
 ### **6. Business Intelligence – Power BI**
-- Connected Power BI to Redshift to build:
-  - **A centralized Ticket Insights Dashboard**  
+- Connected Power BI to Redshift to build:  
   - **A System Logs Performance Dashboard**
+  - **A centralized Ticket Insights Dashboard**
 
 All dashboards reflect the latest data automatically.
 
