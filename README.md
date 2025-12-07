@@ -139,7 +139,7 @@ Through this project, I strengthened my expertise in:
 ## 🙏 Acknowledgement
 A special thank you to **Codebasics**.
 
-This project was built as part of their Data Engineering course, and their guidance was instrumental in helping me design and implement this end-to-end AWS pipeline.
+This project was built as part of their [**Data Engineering Basics**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts) course, and their guidance was instrumental in helping me design and implement this end-to-end AWS pipeline.
 
 ---
 
