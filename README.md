@@ -58,8 +58,8 @@ Raw data from both sources is ingested in the S3 Data Lake:
 
 ### **6. Business Intelligence – Power BI**
 - Connected Power BI to Redshift to build:  
-  - **A System Logs Performance Dashboard**
-  - **A centralized Ticket Insights Dashboard**
+  - A **System Logs Performance** Dashboard
+  - A centralized **Ticket Insights** Dashboard
 
 All dashboards reflect the latest data automatically.
 
