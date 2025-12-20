@@ -1,4 +1,4 @@
-# CarePlus – AWS End-to-End Data Engineering
+# 🏢 CarePlus – AWS End-to-End Data Engineering
 
 ## 📌 Project Overview
 
