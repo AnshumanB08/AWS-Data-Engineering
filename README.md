@@ -112,7 +112,8 @@ Key insights include:
 
 ## 🙏 Acknowledgement
 
-This project was built as part of the [**Codebasics Data Engineering Basics Course**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts). Special thanks to **Dhaval Patel**, **Hemanand Vadivel**, and the entire **Codebasics** team for their high-quality content, practical approach, and guidance throughout the learning journey.
+A special thank you to **Codebasics**.
+This project was built as part of their [**Data Engineering Basics Course**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts), and their guidance was instrumental in helping me design and implement this end-to-end AWS pipeline.
 
 ---
 
