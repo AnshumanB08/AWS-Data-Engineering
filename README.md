@@ -1,148 +1,127 @@
 # CarePlus – AWS End-to-End Data Engineering
 
 ## 📌 Project Overview
-CarePlus is an imaginary BPO company that handles customer care operations for multiple clients. The company previously relied on multiple databases and separate dashboards, resulting in fragmented insights and operational inefficiencies.
 
-This project solves these challenges by designing and implementing a fully automated AWS-based ETL pipeline that consolidates structured and unstructured data into a single source of truth, enabling unified reporting for ticket analytics and system log performance insights.
+CarePlus is an imaginary BPO company that manages customer support operations for multiple clients. As the business scaled, operational data such as support tickets and system logs were scattered across multiple databases and dashboards. This fragmentation made it difficult for stakeholders to get a unified view of customer issues, agent performance, and system health.
+
+To address this challenge, this project focuses on designing and implementing a fully automated, cloud-native data engineering pipeline on AWS that consolidates structured and unstructured data into a single source of truth. The transformed data is stored in a centralized data warehouse and consumed by analytical tools to generate unified dashboards for business and operational insights.
 
 ---
 
 ## 🎯 Problem Statement
-CarePlus faced several business and technical issues:
 
-- Operational insights were scattered across multiple OLTP sources.
-- Ticket data was stored in MySQL, while system logs were stored separately on a cloud server.
-- There was no centralized data warehouse for analytics.
-- Dashboards were created independently across teams, leading to inconsistent KPIs.
-- Manual processes delayed decision-making and made scalability difficult.
+- Operational data was distributed across multiple OLTP systems and dashboards.
+- Support tickets (structured data) resided in a MySQL database, while system logs (semi-structured/unstructured data) were stored on a cloud server.
+- Lack of a centralized analytics layer resulted in inconsistent metrics, delayed insights, and limited visibility into system performance and support operations.
 
-This project builds an automated ETL system using AWS to integrate all data, transform it, store it in a data warehouse, and expose it to BI tools—resulting in unified business insights.
+The objective was to build an end-to-end ETL pipeline that converts OLTP data into an OLAP-friendly format, creates a single source of truth, and enables scalable analytics through dashboards.
 
 ---
 
 ## 🏗️ Data Engineering Architecture
 
-### **1. Data Sources (OLTP Layer)** 
-- **Cloud Server:** Stores system logs (semi-structured/unstructured data)
-- **MySQL Database:** Contains tickets data (related structured data)
+The solution is built using a modern AWS serverless architecture:
 
-### **2. Data Lake Layer – Amazon S3**
-Raw data from both sources is ingested in the S3 Data Lake:
-- ***s3://careplus-stored-data/support-logs/raw/***
-- ***s3://careplus-stored-data/support-tickets/raw/***
+- ### **Data Sources (OLTP)** 
+  - Support Tickets stored in MySQL
+  - Support Logs stored on a cloud server
 
-### **3. Data Processing & Transformation**
+- ### **Data Lake (Amazon S3)**
+  - **Raw Zone:** Stores incoming ticket CSV files and raw log files
+  - **Processed Zone:** Stores cleaned and transformed data in Parquet format
 
-#### **a) Log Files Pipeline**
-- Raw log files ingested into S3.  
-- **AWS Lambda (serverless)** performs:
-  - Data Cleaning  
-  - Parsing JSON/text logs  
-  - Data transformation  
-- Output stored as Parquet in: ***s3://careplus-stored-data/support-logs/processed/***
+- ### **Data Processing & Transformation**
+  - **AWS Lambda:** Cleans and transforms raw log files and writes optimized Parquet data to S3
+  - **AWS Glue:** Processes ticket data extracted from MySQL, applies transformations, and stores it in Parquet format
 
-#### **b) Tickets Pipeline**
-- Tickets data in MySQL database exported as CSV files and ingested into S3. 
-- **AWS Glue** transforms the data:
-  - Cleaning & standardization  
-  - Conversion to Parquet  
-- Output stored as Parquet in: ***s3://careplus-stored-data/support-tickets/processed/***
+- ### **Analytics & Storage**
+  - **Amazon Athena:** Enables ad-hoc SQL analysis directly on processed data in S3
+  - **Amazon Redshift Serverless:** Acts as the centralized data warehouse
 
-### **4. Ad-hoc SQL Analysis – Amazon Athena**
-- Run quick Ad-hoc queries directly on the parquet files in S3 processed directories. 
-- Helps validate ETL output and perform exploratory analytics.
+- ### **Visualization**
+  - **Power BI** connected to Amazon Redshift to generate interactive dashboards
 
-### **5. Data Warehouse Layer – Amazon Redshift Serverless**
-- All cleaned and optimized processed data from S3 is loaded into Redshift. 
-- Serves as the **single source of truth** for analytics and reporting.
-
-### **6. Business Intelligence – Power BI**
-- Connected Power BI to Redshift to build:  
-  - A **System Logs Performance** Dashboard
-  - A centralized **Ticket Insights** Dashboard
-
-All dashboards reflect the latest data automatically.
-
-### **7. Pipeline Automation**
-The entire ETL process is automated:
-- Any new data entering the OLTP system is:
-    - Automatically ingested → transformed → stored
-    - Loaded into Redshift
-    - Reflected in Power BI
-    - No manual intervention needed.
+- ### **Automation**
+  - The pipeline is fully automated. Any new data arriving from the **OLTP systems** is automatically **ingested, transformed, loaded** into **Redshift**, and reflected in the **Power BI dashboards**.
 
 ---
 
 ## 🖼️ Pipeline Architecture Diagram
+
 ![Pipeline Architecture](aws_project_pipeline.svg)
 
 ---
 
 ## 📊 Dashboard Preview
 
-### System Logs Performance Dashboard
+### Support Logs Insights
+
 ![Logs Dashboard](logs_ss.png)
 
-### Tickets Insights Dashboard
+Key insights include:
+- System CPU usage trends
+- Average response times
+- Log distribution by severity and user agent
+- Correlation between response time ranges and logged tickets
+
+### Support Tickets Insights
+
 ![Tickets Dashboard](tickets_ss.png)
+
+Key insights include:
+- Total, resolved, open, and escalated tickets
+- Agent-wise ticket distribution
+- Resolution time analysis by issue category and priority
+- Channel-wise ticket status breakdown
 
 🔗 [**Interactive Dashboard Web View**](https://app.powerbi.com/view?r=eyJrIjoiMTc0MjlkMjEtMWU5My00ZWY0LWJmMzAtZjc5NTVhYzVmZGVhIiwidCI6ImM2ZTU0OWIzLTVmNDUtNDAzMi1hYWU5LWQ0MjQ0ZGM1YjJjNCJ9)
 
 ---
 
-## 🚀 Project Outcomes
-This project successfully delivered:
+## 🚀 Outcome and Business Impact
 
-**✔ A unified data ecosystem:** All structured and unstructured data is centralized into one data warehouse **(Redshift)**.
-
-**✔ Single Source of Truth:** Redshift now holds clean, transformed, analytics-ready datasets.
-
-**✔ Automated ETL Pipeline:** Reduced manual handling by 100% through Lambda, Glue, and S3 event triggers.
-
-**✔ Consistent KPIs Across the Organization:** Power BI dashboards provide unified metrics shared across teams.
-
-**✔ Improved Operational Efficiency:**
-  - Faster report generation
-  - Reduced data duplication
-  - Enhanced visibility into ticket handling & system performance
-
-**✔ Scalability:** Serverless AWS components automatically scale with business needs.
+- Established a single source of truth for both support tickets and system logs.
+- Reduced manual reporting and eliminated dependency on multiple dashboards.
+- Enabled faster, data-driven decision-making for operations and management teams.
+- Improved visibility into system performance, agent productivity, and customer support efficiency.
+- Built a scalable and cost-efficient serverless data platform using AWS managed services.
 
 ---
 
-## 🧠 Skills Learned
-Through this project, I strengthened my expertise in:
+## 🧩 Problems Solved
 
-### AWS Cloud Services
-- Amazon S3 (Data Lake)
-- AWS Lambda (Serverless ETL)
-- AWS Glue (Data Transformation Jobs)
-- Amazon Athena (SQL on Data Lake)
-- Amazon Redshift Serverless (Data Warehousing)
-- IAM Role-based access policies (Permissions & Security)
+- Data silos across multiple systems were consolidated into a centralized analytics platform.
+- Inefficient querying of raw data was replaced with optimized Parquet-based analytics.
+- Lack of real-time visibility was resolved through automated data ingestion and refresh.
+- Operational metrics became consistent, reliable, and easily accessible.
 
-### Data Engineering Concepts
-- ETL/ELT workflows
-- OLTP → OLAP processing
-- Data pipeline orchestration
-- Schema design & data modeling
-- Parquet optimization
-- Handling unstructured logs data
-- Building fully automated pipelines
+---
 
-### Analytics & Visualization
-- Power BI data modeling
-- Creating enterprise-grade dashboards
+## 🧠 Skills and Concepts Learned
+
+- Designing end-to-end ETL pipelines on AWS
+- Working with data lakes and zone-based architectures (raw vs processed)
+- Serverless data processing using AWS Lambda and AWS Glue
+- Data modeling for OLAP and analytics
+- Querying large datasets using Amazon Athena
+- Loading and optimizing data in Amazon Redshift Serverless
+- Building production-ready dashboards using Power BI
+- Automating data pipelines for reliability and scalability
 
 ---
 
 ## 🙏 Acknowledgement
-A special thank you to **Codebasics**.
 
-This project was built as part of their [**Data Engineering Basics**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts) course, and their guidance was instrumental in helping me design and implement this end-to-end AWS pipeline.
+This project was built as part of the [**Codebasics Data Engineering Basics Course**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts). Special thanks to **Dhaval Patel**, **Hemanand Vadivel**, and the entire **Codebasics** team for their high-quality content, practical approach, and guidance throughout the learning journey.
 
 ---
 
-## ⭐ If you like this project
+## 🧰 Tech Stack
 
-Consider giving the repository a star 🌟 to support its visibility!
+- AWS S3
+- AWS Lambda
+- AWS Glue
+- Amazon Athena
+- Amazon Redshift Serverless
+- Power BI
+- MySQL
