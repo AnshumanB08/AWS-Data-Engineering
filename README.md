@@ -110,13 +110,6 @@ Key insights include:
 
 ---
 
-## 🙏 Acknowledgement
-
-A special thank you to **Codebasics**.
-This project was built as part of their [**Data Engineering Basics Course**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts), and their guidance was instrumental in helping me design and implement this end-to-end AWS pipeline.
-
----
-
 ## 🧰 Tech Stack
 
 - AWS S3
@@ -128,3 +121,9 @@ This project was built as part of their [**Data Engineering Basics Course**](htt
 - MySQL
 
 ---
+
+## 🙏 Acknowledgement
+
+A special thank you to **Codebasics**.
+This project was built as part of their [**Data Engineering Basics Course**](https://codebasics.io/courses/data-engineering-basics-for-data-analysts), and their guidance was instrumental in helping me design and implement this end-to-end AWS pipeline.
+
